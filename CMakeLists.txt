@@ -16,6 +16,16 @@
 # 	You need to set `QT_ROOT_PATH` to your root installation
 # 	You can tell the Qt wanted modules as a list in `QT_WANTED_MODULES` (default is Core)
 #
+# 	Finally, it will set the variables `QT_COPY_DLLS_DEBUG` and `QT_COPY_DLLS_RELEASE`
+# 	with the list of the stricly necessary DLLs:
+#		- Core(d).dll
+#		- Gui(d).dll
+#		- Widgets(d).dll
+#		- Test(d).dll
+#		- icuin53.dll
+#		- icudt53.dll
+#		- icuuc53.dll
+#
 # - if `CPACK_BUILD`, build binary and source package installers.
 #
 # - if `ENABLE_CONSOLE`, Enable the console
@@ -149,6 +159,25 @@ if (USE_QT)
 		find_package(${module} REQUIRED)
 		include_directories(${${module}_INCLUDE_DIRS})
 	endforeach(module)
+
+	set(QT_COPY_DLLS_DEBUG
+			"${QT_ROOT_PATH}/bin/Qt${QT_VERSION_MAJOR}Cored.dll"
+			"${QT_ROOT_PATH}/bin/Qt${QT_VERSION_MAJOR}Guid.dll"
+			"${QT_ROOT_PATH}/bin/Qt${QT_VERSION_MAJOR}Widgetsd.dll"
+			"${QT_ROOT_PATH}/bin/Qt${QT_VERSION_MAJOR}Testd.dll"
+			"${ICU_LIB_PATH}/icuin53.dll"
+			"${ICU_LIB_PATH}/icudt53.dll"
+			"${ICU_LIB_PATH}/icuuc53.dll"
+	)
+	set(QT_COPY_DLLS_RELEASE
+			"${QT_ROOT_PATH}/bin/Qt${QT_VERSION_MAJOR}Core.dll"
+			"${QT_ROOT_PATH}/bin/Qt${QT_VERSION_MAJOR}Gui.dll"
+			"${QT_ROOT_PATH}/bin/Qt${QT_VERSION_MAJOR}Widgets.dll"
+			"${QT_ROOT_PATH}/bin/Qt${QT_VERSION_MAJOR}Test.dll"
+			"${ICU_LIB_PATH}/icuin53.dll"
+			"${ICU_LIB_PATH}/icudt53.dll"
+			"${ICU_LIB_PATH}/icuuc53.dll"
+	)
 endif()
 
 
