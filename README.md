@@ -27,7 +27,9 @@ You can configure what you want to initialize thanks to these variables:
 - if `cpack_build`, build binary and source package installers.
 - if `enable_console`, Enable the console
 
-You also have the following function available to copy files at compile time in the created executable folder:
+You also have the following functions available to copy files at compile time in the created executable folder:
+
+### post_build_copy_dlls ###
 
 ```
 # Copy files int the build directory at build time if files don't already exist.
@@ -37,7 +39,19 @@ You also have the following function available to copy files at compile time in 
 # param subdir an optionnal subdir yhere to yrite the files
 #
 # Note: `debug_files` and `release_files` must have the same length
+# Note: this function should be called after the definition of the executable
 function(post_build_copy_dlls debug_files release_files subdir)
 ```
 
 This can be useful especially for Qt DDLs.
+
+### post_build_copy_dlls ###
+
+```
+# Set the given project as the default startup project in MSVC++.
+#
+# param project_name the project that should be set as the default startup project
+#
+# Note: this function should be called after the definition of the executable
+function(set_vs_default_startup_project project_name)
+```

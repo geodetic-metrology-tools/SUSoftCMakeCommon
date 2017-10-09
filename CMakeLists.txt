@@ -1,9 +1,13 @@
 #
 # This file contains common CMake stup for SU projects. A global setup will be executed for
-# all projects. However, depending on your project, you can also enable some specific
-# automatic configuration:
+# all projects.
 #
-# - if `create_doc` is TRUE, create Doxygen documentation
+# You *need* to define the variable `EXT_LIBS_TXT_PATH` that points to the txt file
+# containing all the different paths.
+#
+# Depending on your project, you can also enable some specific automatic configuration:
+#
+# - if `CREATE_DOC` is TRUE, create Doxygen documentation
 # 	Note that you'll need to set the variable `DOXYGEN_CONF_PATH` as a relative path to the
 # 	`Doxyfile.in`.
 # 	e.g. `option(DOXYGEN_CONF_PATH "LGC")`
@@ -12,11 +16,11 @@
 # 	You need to set `QT_ROOT_PATH` to your root installation
 # 	You can tell the Qt wanted modules as a list in `QT_WANTED_MODULES` (default is Core)
 #
-# - if `cpack_build`, build binary and source package installers.
+# - if `CPACK_BUILD`, build binary and source package installers.
 #
-# - if `enable_console`, Enable the console
+# - if `ENABLE_CONSOLE`, Enable the console
 
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.6)
 
 #
 # FUNCTIONS
@@ -29,16 +33,26 @@ cmake_minimum_required(VERSION 3.0)
 # param subdir an optionnal subdir yhere to yrite the files
 #
 # Note: `debug_files` and `release_files` must have the same length
+# Note: this function should be called after the definition of the executable
 function(post_build_copy_dlls debug_files release_files subdir)
 	string (REPLACE ";" "\" \"" debug_files_str "${debug_files}")
 	string (REPLACE ";" " " release_files_str "${release_files}")
-	add_custom_command(TARGET ${EXECUTABLE_NAME} POST_BUILD
+	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 		COMMAND "${CMAKE_COMMAND}" -E copy_if_different
 			$<$<CONFIG:debug>:"${debug_files_str}">$<$<CONFIG:release>:${release_files_str}>
-			"$<TARGET_FILE_DIR:${EXECUTABLE_NAME}>/${subdir}"
+			"$<TARGET_FILE_DIR:${PROJECT_NAME}>/${subdir}"
 		COMMENT "Copying dlls to output directory"
 	)
 endfunction(post_build_copy_dlls)
+
+# Set the given project as the default startup project in MSVC++.
+#
+# param project_name the project that should be set as the default startup project
+#
+# Note: this function should be called after the definition of the executable
+function(set_vs_default_startup_project project_name)
+	set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${project_name})
+endfunction(set_vs_default_startup_project)
 
 #
 # GLOBAL SETUP
@@ -95,7 +109,7 @@ include(${EXT_LIBS_TXT_PATH})
 # DOXYGEN SETUP
 #
 
-if (create_doc)
+if (CREATE_DOC)
 	find_package(Doxygen)
 	if (DOXYGEN_FOUND)
 		configure_file(
@@ -114,7 +128,7 @@ endif()
 # CONSOLE SETUP
 #
 
-if (enable_console)
+if (ENABLE_CONSOLE)
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /subsystem:CONSOLE") 
 endif()
 
@@ -138,7 +152,7 @@ if (USE_QT)
 endif()
 
 
-if(cpack_build)
+if(CPACK_BUILD)
 	# Build binary and source package installers:
-	include(${CMAKE_CURRENT_SOURCE_DIR}/CPackGUI.cmake)
+	include(${CMAKE_SOURCE_DIR}/CPackGUI.cmake)
 endif()
