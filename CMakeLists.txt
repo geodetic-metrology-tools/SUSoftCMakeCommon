@@ -46,10 +46,10 @@ cmake_minimum_required(VERSION 3.6)
 # Note: this function should be called after the definition of the executable
 function(post_build_copy_dlls debug_files release_files subdir)
 	string (REPLACE ";" "\" \"" debug_files_str "${debug_files}")
-	string (REPLACE ";" " " release_files_str "${release_files}")
+	string (REPLACE ";" "\" \"" release_files_str "${release_files}")
 	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 		COMMAND "${CMAKE_COMMAND}" -E copy_if_different
-			$<$<CONFIG:debug>:"${debug_files_str}">$<$<CONFIG:release>:${release_files_str}>
+			$<$<CONFIG:debug>:"${debug_files_str}">$<$<CONFIG:release>:"${release_files_str}">
 			"$<TARGET_FILE_DIR:${PROJECT_NAME}>/${subdir}"
 		COMMENT "Copying dlls to output directory"
 	)

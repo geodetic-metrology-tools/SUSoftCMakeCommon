@@ -12,7 +12,7 @@ Features
 Usage
 -----
 
-You should add this repository as a submodule of your repository in the subfolder `source`. Then, include the `CMakeLists.txt` of this repository into your main CMake file.
+You should clone this repository in the `ext` folder next to the file `ext_libs.txt`. Then, include the `CMakeLists.txt` of this repository into your main CMake file.
 
 You can configure what you want to initialize thanks to these variables:
 
@@ -25,7 +25,7 @@ You can configure what you want to initialize thanks to these variables:
 	- You need to set `ICU_LIB_PATH` to the path where the ICU DLLs are
 	- You can tell the Qt wanted modules as a list in `QT_WANTED_MODULES` (default is Core)
 	- Finally, it will set the variables `QT_COPY_DLLS_DEBUG` and `QT_COPY_DLLS_RELEASE`
-	with the list of the stricly necessary DLLs:
+	  with the list of the stricly necessary DLLs:
 		- Core(d).dll
 		- Gui(d).dll
 		- Widgets(d).dll
