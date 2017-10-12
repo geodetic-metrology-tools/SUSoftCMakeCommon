@@ -2,10 +2,7 @@
 # This file contains common CMake stup for SU projects. A global setup will be executed for
 # all projects.
 #
-# You *need* to define the variable `EXT_LIBS_TXT_PATH` that points to the txt file
-# containing all the different paths.
-#
-# Depending on your project, you can also enable some specific automatic configuration:
+# Depending on your project, you can enable some specific automatic configuration:
 #
 # - if `CREATE_DOC` is TRUE, create Doxygen documentation
 # 	Note that you'll need to set the variable `DOXYGEN_CONF_PATH` as a relative path to the
@@ -113,7 +110,7 @@ endif()
 
 set(EXECUTABLE_NAME ${PROJECT_NAME})
 project(${PROJECT_NAME} CXX)
-include(${EXT_LIBS_TXT_PATH})
+include(${CMAKE_CURRENT_LIST_DIR}/ext_libs.txt)
 
 #
 # DOXYGEN SETUP

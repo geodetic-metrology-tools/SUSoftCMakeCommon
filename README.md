@@ -12,7 +12,7 @@ Features
 Usage
 -----
 
-You should clone this repository in the `ext` folder next to the file `ext_libs.txt`. Then, include the `CMakeLists.txt` of this repository into your main CMake file.
+You should clone this repository in the `susoft` folder next to the other repositories. Then, include the `CMakeLists.txt` of this repository into your main CMake file.
 
 You can configure what you want to initialize thanks to these variables:
 
@@ -68,79 +68,21 @@ function(set_vs_default_startup_project project_name)
 Configuration
 -------------
 
-You should have a file called `ext_libs.txt` at the root of your dev environment. This one should be similar to the one below (it has been updated).
-Please note the added `ICU_LIB_PATH`. You can download ICU from http://site.icu-project.org/download/53#TOC-ICU4C-Download
+This repository contains a `ext_libs.txt` file. Feel free to update the paths in this file, to match *your* dev environment.
+In particular, check these variables:
 
-```cmake
-##########################################
-#
-# Plateform
-#
+- `EXT_LIB_PATH_WINDOWS`: path to your dev environment (default is `"C:/susoft/ext"`)
+- `BOOST_ROOT`: The path to Boost folder
+- `EIGEN_INCLUDE_PATH`: The path to Eigen folder
+- `GLEW_BINARY_PATH`: The path to Glew binary folder
+- `GLEW_INCLUDE_PATH`: The path to Glew include folder
+- `GLEW_LIBRARIES`: The path to Gley lib folder
+- `ICU_LIB_PATH`: The path to the folder holding the ICU DLLs (the `ext` folder for instance)
+- `QT_ROOT_PATH`: The path to Qt installation. You should have among others `bin` and `lib` folders there
+- `QT_VERSION_MAJOR`: The major version of Qt (so far, it is `5`)
+- `REFRAME_LIBRARY_DIR`: The path to Reframe folder
+- `TCLAP_INCLUDE_PATH`: The path to TClap folder
+- `TUT_INCLUDE_PATH`: The path to Tut folder
+- `VCREDIST_INSTALLER_PATH`: The path to the folder holding the VCRedist installer
 
-if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-	MESSAGE("-- 64 bits platform detected --")
-	set(PLATFORM 64)
-else(CMAKE_SIZEOF_VOID_P EQUAL 4)
-	MESSAGE("-- 32 bits platform detected --")
-	set(PLATFORM 32)
-endif()
-
-##########################################
-#
-# UNIX
-#
-if(UNIX)
-	set(EXT_LIB_PATH_UNIX					"/root/workspace/ext")
-
-	##########################################
-	# Other susoft related
-	set(TUT_INCLUDE_PATH					"${EXT_LIB_PATH_UNIX}/tut")
-	set(EIGEN_INCLUDE_PATH					"${EXT_LIB_PATH_UNIX}")
-	set(BOOST_ROOT							"${EXT_LIB_PATH_UNIX}/boost_1_59_0")
-
-##########################################
-#
-# WINDOWS
-#
-else()
-	set(EXT_LIB_PATH_WINDOWS				"C:/susoft/ext")
-
-	##########################################
-	# Google Test
-	set(GOOGLE_TEST_DIR						"${EXT_LIB_PATH_WINDOWS}/googletest")
-	set(GOOGLE_MOCK_DIR						"${EXT_LIB_PATH_WINDOWS}/googlemock")
-	set(GOOGLE_TEST_INCLUDE_DIR				"${GOOGLE_TEST_DIR}/include")
-	set(GOOGLE_MOCK_INCLUDE_DIR				"${GOOGLE_MOCK_DIR}/include")
-
-	##########################################
-	# Qt
-	if(PLATFORM EQUAL 64)
-		set(QT_ROOT_PATH					"C:/Qt/5.9.1/msvc2017_64")
-	else()
-		set(QT_ROOT_PATH					"C:/Qt/5.9.1/msvc2017")
-	endif()
-	set(QT_VERSION_MAJOR					5)
-	set(ICU_LIB_PATH						"${EXT_LIB_PATH_WINDOWS}")
-
-	##########################################
-	# Other susoft related
-	if(PLATFORM EQUAL 64)
-		set(VCREDIST_INSTALLER_PATH			"${EXT_LIB_PATH_WINDOWS}/VC_redist.x64.exe")
-		set(GLEW_LIBRARIES					"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.0.0/lib/Release/x64/glew32.lib"
-											"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.0.0/lib/Release/x64/glew32s.lib")
-		set(GLEW_BINARY_PATH				"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.0.0/bin/Release/x64")
-	else()
-		set(VCREDIST_INSTALLER_PATH			"${EXT_LIB_PATH_WINDOWS}/VC_redist.x86.exe")
-		set(GLEW_LIBRARIES					"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.0.0/lib/Release/Win32/glew32.lib"
-											"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.0.0/lib/Release/Win32/glew32s.lib")
-		set(GLEW_BINARY_PATH				"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.0.0/bin/Release/Win32")
-	endif()
-
-	set(TUT_INCLUDE_PATH					"${EXT_LIB_PATH_WINDOWS}/Tut")
-	set(EIGEN_INCLUDE_PATH					"${EXT_LIB_PATH_WINDOWS}")
-	set(BOOST_ROOT							"${EXT_LIB_PATH_WINDOWS}/boost_1_65_1")
-	set(TCLAP_INCLUDE_PATH					"${EXT_LIB_PATH_WINDOWS}/tclap-1.2.1/include")
-	set(REFRAME_LIBRARY_DIR					"${EXT_LIB_PATH_WINDOWS}/Reframe")
-	set(GLEW_INCLUDE_PATH					"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.0.0/include")
-endif()
-```
+Note that this file is different from the one you used to use. Especially, please note the added `ICU_LIB_PATH`. You can download ICU from http://site.icu-project.org/download/53#TOC-ICU4C-Download
