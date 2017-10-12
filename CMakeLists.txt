@@ -37,7 +37,7 @@ cmake_minimum_required(VERSION 3.6)
 #
 # param debug_files (list) files that should go into the debug folder
 # param release_files (list) files that should go into the release folder (can be the same as debug_files)
-# param subdir an optionnal subdir yhere to yrite the files
+# param subdir an optionnal subdir where to write the files
 #
 # Note: `debug_files` and `release_files` must have the same length
 # Note: this function should be called after the definition of the executable
@@ -60,6 +60,67 @@ endfunction(post_build_copy_dlls)
 function(set_vs_default_startup_project project_name)
 	set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${project_name})
 endfunction(set_vs_default_startup_project)
+
+# Create an installer package.
+#
+# The installer contains the minimum required files:
+# 	- the executable
+# 	- the VC redist
+# 	- if `USE_QT`, adds the following DLLs:
+# 		- everything contained in `QT_COPY_DLLS_RELEASE`
+# 	- if `CREATE_DOC`, adds the doc
+#
+# NOTE: You can add extra files to the installer thanks to the function
+# 		`installer_copy_files` (see below)
+#
+# Note: this function should be called after the definition of the executable
+function(create_default_installer)
+	install(
+		TARGETS ${PROJECT_NAME}
+		DESTINATION "."
+		COMPONENT application
+	)
+	install(
+		PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
+		DESTINATION "."
+		COMPONENT application
+	)
+	install(
+		FILES "${VCREDIST_INSTALLER_PATH}"
+		DESTINATION "."
+		COMPONENT application
+	)
+
+	# If Qt, we install the DLLs
+	if (${USE_QT})
+		installer_copy_files("${QT_COPY_DLLS_RELEASE}" ".")
+		installer_copy_files("${QT_ROOT_PATH}/plugins/platforms/qwindows.dll" "./platforms/")
+	endif()
+
+	# If we generate the doc, we install it
+	if (${CREATE_DOC})
+		install(
+			DIRECTORY "${CMAKE_SOURCE_DIR}/../doc/"
+			DESTINATION "./doc"
+			COMPONENT application
+		)
+	endif()
+endfunction(create_default_installer)
+
+# When creating the installer, this function can be called to add files in the installer.
+#
+# param files a list of files to add
+# param destination the destination in the installation folder
+#
+# Note: this function should be called after the definition of the executable
+# 		and preferably after the call to `create_default_installer`
+function(installer_copy_files files destination)
+	install(
+		FILES ${files}
+		DESTINATION "${destination}"
+		COMPONENT application
+	)
+endfunction(installer_copy_files)
 
 #
 # GLOBAL SETUP
