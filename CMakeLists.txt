@@ -35,19 +35,25 @@ cmake_minimum_required(VERSION 3.6)
 
 # Copy files int the build directory at build time if files don't already exist.
 #
+# param target the target when we want to copy (like the executable name)
 # param debug_files (list) files that should go into the debug folder
 # param release_files (list) files that should go into the release folder (can be the same as debug_files)
 # param subdir an optionnal subdir where to write the files
 #
 # Note: `debug_files` and `release_files` must have the same length
 # Note: this function should be called after the definition of the executable
-function(post_build_copy_dlls debug_files release_files subdir)
+function(post_build_copy_dlls target debug_files release_files subdir)
 	string (REPLACE ";" "\" \"" debug_files_str "${debug_files}")
 	string (REPLACE ";" "\" \"" release_files_str "${release_files}")
-	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+	add_custom_command(TARGET ${target} POST_BUILD
+		COMMAND "${CMAKE_COMMAND}" -E make_directory
+			"$<TARGET_FILE_DIR:${target}>/${subdir}"
+		COMMENT "Creating subdir ${subdir}"
+	)
+	add_custom_command(TARGET ${target} POST_BUILD
 		COMMAND "${CMAKE_COMMAND}" -E copy_if_different
 			$<$<CONFIG:debug>:"${debug_files_str}">$<$<CONFIG:release>:"${release_files_str}">
-			"$<TARGET_FILE_DIR:${PROJECT_NAME}>/${subdir}"
+			"$<TARGET_FILE_DIR:${target}>/${subdir}"
 		COMMENT "Copying dlls to output directory"
 	)
 endfunction(post_build_copy_dlls)

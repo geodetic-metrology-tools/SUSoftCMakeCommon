@@ -12,6 +12,8 @@ Features
 Configuration
 -------------
 
+You should clone this repository in the `susoft` folder next to the other repositories. Then, include the `CMakeLists.txt` of this repository into your main CMake file.
+
 This repository contains a `ext_libs.txt` file. Feel free to update the paths in this file, to match *your* dev environment.
 In particular, check these variables:
 
@@ -33,8 +35,6 @@ Note that this file is different from the one you used to use. Especially, pleas
 
 Usage
 -----
-
-You should clone this repository in the `susoft` folder next to the other repositories. Then, include the `CMakeLists.txt` of this repository into your main CMake file.
 
 You can configure what you want to initialize thanks to these variables:
 
@@ -67,6 +67,7 @@ You also have the following functions available to copy files at compile time in
 
 Copy files int the build directory at build time if files don't already exist.
 
+- param `target` the target when we want to copy (like the executable name)
 - param `debug_files` (list) files that should go into the debug folder
 - param `release_files` (list) files that should go into the release folder (can be the same as `debug_files`)
 - param `subdir` an optionnal subdir where to write the files
