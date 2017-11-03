@@ -52,20 +52,20 @@ else()
 	# Other susoft related
 	if(PLATFORM EQUAL 64)
 		set(VCREDIST_INSTALLER_PATH			"${EXT_LIB_PATH_WINDOWS}/VC_redist.x64.exe")
-		set(GLEW_LIBRARIES					"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.0.0/lib/Release/x64/glew32.lib"
-											"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.0.0/lib/Release/x64/glew32s.lib")
-		set(GLEW_BINARY_PATH				"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.0.0/bin/Release/x64")
+		set(GLEW_LIBRARIES					"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.1.0/lib/Release/x64/glew32.lib"
+											"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.1.0/lib/Release/x64/glew32s.lib")
+		set(GLEW_BINARY_PATH				"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.1.0/bin/Release/x64")
 	else()
 		set(VCREDIST_INSTALLER_PATH			"${EXT_LIB_PATH_WINDOWS}/VC_redist.x86.exe")
-		set(GLEW_LIBRARIES					"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.0.0/lib/Release/Win32/glew32.lib"
-											"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.0.0/lib/Release/Win32/glew32s.lib")
-		set(GLEW_BINARY_PATH				"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.0.0/bin/Release/Win32")
+		set(GLEW_LIBRARIES					"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.1.0/lib/Release/Win32/glew32.lib"
+											"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.1.0/lib/Release/Win32/glew32s.lib")
+		set(GLEW_BINARY_PATH				"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.1.0/bin/Release/Win32")
 	endif()
 
-	set(TUT_INCLUDE_PATH					"${EXT_LIB_PATH_WINDOWS}/Tut")
+	set(TUT_INCLUDE_PATH					"${EXT_LIB_PATH_WINDOWS}/tut-framework-2016-12-19/include")
 	set(EIGEN_INCLUDE_PATH					"${EXT_LIB_PATH_WINDOWS}")
 	set(BOOST_ROOT							"${EXT_LIB_PATH_WINDOWS}/boost_1_65_1")
 	set(TCLAP_INCLUDE_PATH					"${EXT_LIB_PATH_WINDOWS}/tclap-1.2.1/include")
 	set(REFRAME_LIBRARY_DIR					"${EXT_LIB_PATH_WINDOWS}/Reframe")
-	set(GLEW_INCLUDE_PATH					"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.0.0/include")
+	set(GLEW_INCLUDE_PATH					"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.1.0/include")
 endif()
