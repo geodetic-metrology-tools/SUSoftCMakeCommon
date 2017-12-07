@@ -7,7 +7,7 @@ Features
 --------
 
 - It sets the different compile options for the compiler
-- It copies at build time the required DDLs (thanks to the variables `SUSOFT_DLLS_DEBUG` and `SUSOFT_DLLS_RELEASE`)
+- It copies at build time the required DLLs (thanks to the variables `SUSOFT_DLLS_DEBUG` and `SUSOFT_DLLS_RELEASE`)
 
 Configuration
 -------------
@@ -17,7 +17,7 @@ You should clone this repository in the `susoft` folder next to the other reposi
 This repository contains a `ext_libs.txt` file. Feel free to update the paths in this file, to match *your* dev environment.
 In particular, check these variables:
 
-- `EXT_LIB_PATH_WINDOWS`: path to your dev environment (default is `"C:/susoft/ext"`)
+- `EXT_LIB_PATH`: path to your dev environment (default is `"C:/susoft/ext"`)
 - `BOOST_ROOT`: The path to Boost folder
 - `EIGEN_INCLUDE_PATH`: The path to Eigen folder
 - `GLEW_BINARY_PATH`: The path to Glew binary folder

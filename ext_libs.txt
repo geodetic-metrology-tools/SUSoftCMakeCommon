@@ -3,6 +3,16 @@
 # Plateform
 #
 
+##########################################
+# Operating system
+if(UNIX)
+	set(EXT_LIB_PATH					"/home/$ENV{USER}/susoft/ext")
+else()
+	set(EXT_LIB_PATH					"C:/susoft/ext")
+endif()
+
+##########################################
+# Compiled version
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
 	MESSAGE("-- 64 bits platform detected --")
 	set(PLATFORM 64)
@@ -13,52 +23,49 @@ endif()
 
 ##########################################
 #
-# UNIX
+# Librairies
 #
-if(UNIX)
-	set(EXT_LIB_PATH_UNIX					"/root/workspace/ext")
+set(BOOST_ROOT							"${EXT_LIB_PATH}/boost_1_65_1")
+set(EIGEN_INCLUDE_PATH					"${EXT_LIB_PATH}/eigen")
+set(TCLAP_INCLUDE_PATH					"${EXT_LIB_PATH}/tclap/include")
+set(TUT_INCLUDE_PATH					"${EXT_LIB_PATH}/tut-framework/include")
 
-	##########################################
-	# Other susoft related
-	set(TUT_INCLUDE_PATH					"${EXT_LIB_PATH_UNIX}/tut")
-	set(EIGEN_INCLUDE_PATH					"${EXT_LIB_PATH_UNIX}")
-	set(BOOST_ROOT							"${EXT_LIB_PATH_UNIX}/boost_1_59_0")
 
 ##########################################
 #
 # WINDOWS
 #
-else()
-	set(EXT_LIB_PATH_WINDOWS				"C:/susoft/ext")
-
+if(WIN32)
 	##########################################
 	# Qt
 	if(PLATFORM EQUAL 64)
-		set(QT_ROOT_PATH					"C:/Qt/5.9.1/msvc2017_64")
+		set(QT_ROOT_PATH				"C:/Qt/5.9.1/msvc2017_64")
 	else()
-		set(QT_ROOT_PATH					"C:/Qt/5.9.1/msvc2017")
+		set(QT_ROOT_PATH				"C:/Qt/5.9.1/msvc2017")
 	endif()
-	set(QT_VERSION_MAJOR					5)
-	set(ICU_LIB_PATH						"${EXT_LIB_PATH_WINDOWS}")
+	set(QT_VERSION_MAJOR				5)
+	set(ICU_LIB_PATH					"${EXT_LIB_PATH}")
+
+	##########################################
+	# Other susoft related
+	set(REFRAME_LIBRARY_DIR				"${EXT_LIB_PATH}/Reframe")
+	set(GLEW_INCLUDE_PATH				"${EXT_LIB_PATH}/Glew/glew-2.1.0/include")
 
 	##########################################
 	# Other susoft related
 	if(PLATFORM EQUAL 64)
-		set(VCREDIST_INSTALLER_PATH			"${EXT_LIB_PATH_WINDOWS}/VC_redist.x64.exe")
-		set(GLEW_LIBRARIES					"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.1.0/lib/Release/x64/glew32.lib"
-											"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.1.0/lib/Release/x64/glew32s.lib")
-		set(GLEW_BINARY_PATH				"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.1.0/bin/Release/x64")
+		set(GLEW_LIBRARIES				"${EXT_LIB_PATH}/Glew/glew-2.1.0/lib/Release/x64/glew32.lib"
+										"${EXT_LIB_PATH}/Glew/glew-2.1.0/lib/Release/x64/glew32s.lib")
+		set(GLEW_BINARY_PATH			"${EXT_LIB_PATH}/Glew/glew-2.1.0/bin/Release/x64")
+		if(MSVC)
+			set(VCREDIST_INSTALLER_PATH	"${EXT_LIB_PATH}/VC_redist.x64.exe")
+		endif()
 	else()
-		set(VCREDIST_INSTALLER_PATH			"${EXT_LIB_PATH_WINDOWS}/VC_redist.x86.exe")
-		set(GLEW_LIBRARIES					"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.1.0/lib/Release/Win32/glew32.lib"
-											"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.1.0/lib/Release/Win32/glew32s.lib")
-		set(GLEW_BINARY_PATH				"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.1.0/bin/Release/Win32")
+		set(GLEW_LIBRARIES				"${EXT_LIB_PATH}/Glew/glew-2.1.0/lib/Release/Win32/glew32.lib"
+										"${EXT_LIB_PATH}/Glew/glew-2.1.0/lib/Release/Win32/glew32s.lib")
+		set(GLEW_BINARY_PATH			"${EXT_LIB_PATH}/Glew/glew-2.1.0/bin/Release/Win32")
+		if(MSVC)
+			set(VCREDIST_INSTALLER_PATH	"${EXT_LIB_PATH}/VC_redist.x86.exe")
+		endif()
 	endif()
-
-	set(TUT_INCLUDE_PATH					"${EXT_LIB_PATH_WINDOWS}/tut-framework-2016-12-19/include")
-	set(EIGEN_INCLUDE_PATH					"${EXT_LIB_PATH_WINDOWS}")
-	set(BOOST_ROOT							"${EXT_LIB_PATH_WINDOWS}/boost_1_65_1")
-	set(TCLAP_INCLUDE_PATH					"${EXT_LIB_PATH_WINDOWS}/tclap-1.2.1/include")
-	set(REFRAME_LIBRARY_DIR					"${EXT_LIB_PATH_WINDOWS}/Reframe")
-	set(GLEW_INCLUDE_PATH					"${EXT_LIB_PATH_WINDOWS}/Glew/glew-2.1.0/include")
 endif()

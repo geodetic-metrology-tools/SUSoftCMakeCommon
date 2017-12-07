@@ -132,18 +132,39 @@ endfunction(installer_copy_files)
 # GLOBAL SETUP
 #
 
-# Set the build type:
-set(CMAKE_BUILD_TYPE DEBUG)
-
 # Specify the languages used:
 enable_language("CXX")
 
 # We need some CMake macros
 include(CheckIncludeFileCXX)
 
-# Allows c++ 11 standard:
-if (UNIX)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
+# compiler options
+include(ProcessorCount)
+ProcessorCount(N)
+message("-- ${N} cores --")
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+	add_compile_options(
+		# generic
+		"-Wall" "-Wextra" "-pedantic" "-ftemplate-backtrace-limit=0" # the last one is because of Eigen
+	)
+	# debug
+	if ("${CMAKE_BUILD_TYPE}" STREQUAL "DEBUG")
+		add_compile_options("-g" "-O0")
+	# release
+	else()
+		add_compile_options("-O3")
+	endif()
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+	add_compile_options(
+		# generic
+		"/cgthreads${N}" "/W4"
+		# debug
+		"$<$<CONFIG:debug>:/DEBUG>"
+		"$<$<CONFIG:debug>:/Od>"
+		# release
+		"$<$<CONFIG:release>:/GL>"
+		"$<$<CONFIG:release>:/O2>"
+	)
 endif()
 
 # List of directories to search for CMake modules:
@@ -152,12 +173,11 @@ set(CMAKE_MODULE_PATH
 		${CMAKE_MODULE_PATH}
 )
 
-set(PLATFORM_BUNDLE WIN32)
-#if(UNIX)
-	# do the magic
-#endif()
-if(APPLE)
-	set(PLATFORM_BUNDLE MACOSX_BUNDLE)
+set(PLATFORM_BUNDLE "")
+if(WIN32)
+	set(PLATFORM_BUNDLE "WIN32")
+elseif(APPLE)
+	set(PLATFORM_BUNDLE "MACOSX_BUNDLE")
 endif()
 
 if (APPLE)
@@ -202,7 +222,7 @@ endif()
 # CONSOLE SETUP
 #
 
-if (ENABLE_CONSOLE)
+if (ENABLE_CONSOLE AND MSVC)
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /subsystem:CONSOLE") 
 endif()
 
@@ -245,7 +265,7 @@ if (USE_QT)
 endif()
 
 
-if(CPACK_BUILD)
+if(CPACK_BUILD AND WIN32)
 	# Build binary and source package installers:
 	include(${CMAKE_SOURCE_DIR}/CPackGUI.cmake)
 endif()
