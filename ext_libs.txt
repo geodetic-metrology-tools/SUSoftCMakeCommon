@@ -26,7 +26,7 @@ endif()
 # Librairies
 #
 set(BOOST_ROOT							"${EXT_LIB_PATH}/boost_1_66_0")
-set(EIGEN_INCLUDE_PATH					"${EXT_LIB_PATH}/eigen")
+set(EIGEN_INCLUDE_PATH					"${EXT_LIB_PATH}/eigen-eigen-b9cd8366d4e8")
 set(TCLAP_INCLUDE_PATH					"${EXT_LIB_PATH}/tclap/include")
 set(TUT_INCLUDE_PATH					"${EXT_LIB_PATH}/tut-framework/include")
 
@@ -39,31 +39,32 @@ if(WIN32)
 	##########################################
 	# Qt
 	if(PLATFORM EQUAL 64)
-		set(QT_ROOT_PATH				"C:/Qt/5.9.1/msvc2017_64")
+		set(QT_ROOT_PATH				"C:/Qt/5.10.1/msvc2017_64")
+		set(ICU_LIB_PATH				"${EXT_LIB_PATH}/icu/bin64")
 	else()
-		set(QT_ROOT_PATH				"C:/Qt/5.9.1/msvc2017")
+		set(QT_ROOT_PATH				"C:/Qt/5.10.1/msvc2015")
+		set(ICU_LIB_PATH				"${EXT_LIB_PATH}/icu/bin")
 	endif()
 	set(QT_VERSION_MAJOR				5)
-	set(ICU_LIB_PATH					"${EXT_LIB_PATH}")
 
 	##########################################
 	# Other susoft related
 	set(REFRAME_LIBRARY_DIR				"${EXT_LIB_PATH}/Reframe")
-	set(GLEW_INCLUDE_PATH				"${EXT_LIB_PATH}/Glew/glew-2.1.0/include")
+	set(GLEW_INCLUDE_PATH				"${EXT_LIB_PATH}/glew-2.1.0/include")
 
 	##########################################
 	# Other susoft related
 	if(PLATFORM EQUAL 64)
-		set(GLEW_LIBRARIES				"${EXT_LIB_PATH}/Glew/glew-2.1.0/lib/Release/x64/glew32.lib"
-										"${EXT_LIB_PATH}/Glew/glew-2.1.0/lib/Release/x64/glew32s.lib")
-		set(GLEW_BINARY_PATH			"${EXT_LIB_PATH}/Glew/glew-2.1.0/bin/Release/x64")
+		set(GLEW_LIBRARIES				"${EXT_LIB_PATH}/glew-2.1.0/lib/Release/x64/glew32.lib"
+										"${EXT_LIB_PATH}/glew-2.1.0/lib/Release/x64/glew32s.lib")
+		set(GLEW_BINARY_PATH			"${EXT_LIB_PATH}/glew-2.1.0/bin/Release/x64")
 		if(MSVC)
 			set(VCREDIST_INSTALLER_PATH	"${EXT_LIB_PATH}/VC_redist.x64.exe")
 		endif()
 	else()
-		set(GLEW_LIBRARIES				"${EXT_LIB_PATH}/Glew/glew-2.1.0/lib/Release/Win32/glew32.lib"
-										"${EXT_LIB_PATH}/Glew/glew-2.1.0/lib/Release/Win32/glew32s.lib")
-		set(GLEW_BINARY_PATH			"${EXT_LIB_PATH}/Glew/glew-2.1.0/bin/Release/Win32")
+		set(GLEW_LIBRARIES				"${EXT_LIB_PATH}/glew-2.1.0/lib/Release/Win32/glew32.lib"
+										"${EXT_LIB_PATH}/glew-2.1.0/lib/Release/Win32/glew32s.lib")
+		set(GLEW_BINARY_PATH			"${EXT_LIB_PATH}/glew-2.1.0/bin/Release/Win32")
 		if(MSVC)
 			set(VCREDIST_INSTALLER_PATH	"${EXT_LIB_PATH}/VC_redist.x86.exe")
 		endif()
