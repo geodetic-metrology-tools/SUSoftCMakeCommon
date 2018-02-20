@@ -162,7 +162,6 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 		"$<$<CONFIG:debug>:/DEBUG>"
 		"$<$<CONFIG:debug>:/Od>"
 		# release
-		"$<$<CONFIG:release>:/GL>"
 		"$<$<CONFIG:release>:/O2>"
 	)
 endif()
