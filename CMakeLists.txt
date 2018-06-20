@@ -222,7 +222,7 @@ endif()
 #
 
 if (ENABLE_CONSOLE AND MSVC)
-	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /subsystem:CONSOLE")
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:CONSOLE")
 endif()
 
 #
@@ -240,7 +240,6 @@ if (USE_QT)
 
 	foreach(module ${QT_WANTED_MODULES})
 		find_package(${module} REQUIRED)
-		include_directories(${${module}_INCLUDE_DIRS})
 	endforeach(module)
 
 	set(QT_COPY_DLLS_DEBUG
