@@ -238,28 +238,18 @@ if (USE_QT)
 	set(CMAKE_AUTOMOC ON)
 	set(CMAKE_AUTORCC ON)
 
+	set(QT_COPY_DLLS_DEBUG
+		"${ICU_LIB_PATH}/icuin53.dll"
+		"${ICU_LIB_PATH}/icudt53.dll"
+		"${ICU_LIB_PATH}/icuuc53.dll"
+	)
+	set(QT_COPY_DLLS_RELEASE ${QT_COPY_DLLS_DEBUG})
+
 	foreach(module ${QT_WANTED_MODULES})
 		find_package(${module} REQUIRED)
+		list(APPEND QT_COPY_DLLS_DEBUG "${QT_ROOT_PATH}/bin/${module}d.dll")
+		list(APPEND QT_COPY_DLLS_RELEASE "${QT_ROOT_PATH}/bin/${module}.dll")
 	endforeach(module)
-
-	set(QT_COPY_DLLS_DEBUG
-			"${QT_ROOT_PATH}/bin/Qt${QT_VERSION_MAJOR}Cored.dll"
-			"${QT_ROOT_PATH}/bin/Qt${QT_VERSION_MAJOR}Guid.dll"
-			"${QT_ROOT_PATH}/bin/Qt${QT_VERSION_MAJOR}Widgetsd.dll"
-			"${QT_ROOT_PATH}/bin/Qt${QT_VERSION_MAJOR}Testd.dll"
-			"${ICU_LIB_PATH}/icuin53.dll"
-			"${ICU_LIB_PATH}/icudt53.dll"
-			"${ICU_LIB_PATH}/icuuc53.dll"
-	)
-	set(QT_COPY_DLLS_RELEASE
-			"${QT_ROOT_PATH}/bin/Qt${QT_VERSION_MAJOR}Core.dll"
-			"${QT_ROOT_PATH}/bin/Qt${QT_VERSION_MAJOR}Gui.dll"
-			"${QT_ROOT_PATH}/bin/Qt${QT_VERSION_MAJOR}Widgets.dll"
-			"${QT_ROOT_PATH}/bin/Qt${QT_VERSION_MAJOR}Test.dll"
-			"${ICU_LIB_PATH}/icuin53.dll"
-			"${ICU_LIB_PATH}/icudt53.dll"
-			"${ICU_LIB_PATH}/icuuc53.dll"
-	)
 endif()
 
 
