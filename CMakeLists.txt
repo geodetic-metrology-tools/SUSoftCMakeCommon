@@ -132,6 +132,8 @@ endfunction(installer_copy_files)
 # GLOBAL SETUP
 #
 
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
 # Specify the languages used:
 enable_language("CXX")
 
@@ -145,7 +147,7 @@ message("-- ${N} cores --")
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	add_compile_options(
 		# generic
-		"-Wall" "-Wextra" "-pedantic" "-ftemplate-backtrace-limit=0" # the last one is because of Eigen
+		"-std=c++17" "-Wall" "-Wextra" "-pedantic" "-ftemplate-backtrace-limit=0" # the last one is because of Eigen
 	)
 	# debug
 	if ("${CMAKE_BUILD_TYPE}" STREQUAL "DEBUG")
@@ -157,7 +159,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	add_compile_options(
 		# generic
-		"/cgthreads${N}" "/W4"
+		"/Zc:__cplusplus" "/std:c++17" "/cgthreads${N}" "/W4"
 		# debug
 		"$<$<CONFIG:debug>:/DEBUG>"
 		"$<$<CONFIG:debug>:/Od>"
