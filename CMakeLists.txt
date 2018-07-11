@@ -27,7 +27,7 @@
 #
 # - if `ENABLE_CONSOLE`, Enable the console
 
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.10)
 
 #
 # FUNCTIONS
@@ -140,6 +140,11 @@ enable_language("CXX")
 # We need some CMake macros
 include(CheckIncludeFileCXX)
 
+# We compile with C++17 features
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 # compiler options
 include(ProcessorCount)
 ProcessorCount(N)
@@ -147,7 +152,7 @@ message("-- ${N} cores --")
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	add_compile_options(
 		# generic
-		"-std=c++17" "-Wall" "-Wextra" "-pedantic" "-ftemplate-backtrace-limit=0" # the last one is because of Eigen
+		"-Wall" "-Wextra" "-pedantic" "-ftemplate-backtrace-limit=0" # the last one is because of Eigen
 	)
 	# debug
 	if ("${CMAKE_BUILD_TYPE}" STREQUAL "DEBUG")
@@ -159,7 +164,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	add_compile_options(
 		# generic
-		"/Zc:__cplusplus" "/std:c++17" "/cgthreads${N}" "/W4"
+		"/Zc:__cplusplus" "/cgthreads${N}" "/W4"
 		# debug
 		"$<$<CONFIG:debug>:/DEBUG>"
 		"$<$<CONFIG:debug>:/Od>"
