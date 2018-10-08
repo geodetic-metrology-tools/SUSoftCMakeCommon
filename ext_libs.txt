@@ -41,10 +41,8 @@ if(WIN32)
 	# Qt
 	if(PLATFORM EQUAL 64)
 		set(QT_ROOT_PATH				"C:/Qt/5.11.1/msvc2017_64")
-		set(ICU_LIB_PATH				"${EXT_LIB_PATH}/icu/bin64")
 	else()
 		set(QT_ROOT_PATH				"C:/Qt/5.11.1/msvc2015")
-		set(ICU_LIB_PATH				"${EXT_LIB_PATH}/icu/bin")
 	endif()
 	set(QT_VERSION_MAJOR				5)
 

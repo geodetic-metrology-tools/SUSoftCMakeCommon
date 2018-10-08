@@ -1,0 +1,73 @@
+#
+# Default values for cpack
+#
+# Note: this is just default values, you can overload anything in your CMakeLists.txt.
+# Note: You will (still) have to call `include(CPack)`
+
+set(CPACK_GENERATOR NSIS)
+set(CPACK_VERBATIM_VARIABLES TRUE)
+set(CPACK_STRIP_FILES TRUE)
+
+# MSVC libraries
+if (MSVC)
+	set(CMAKE_INSTALL_UCRT_LIBRARIES TRUE)
+	include(InstallRequiredSystemLibraries)
+endif()
+
+# Installer:
+set(CPACK_PACKAGE_NAME "${PROJECT_NAME}")
+set(CPACK_PACKAGE_VENDOR "CERN SUSoft - EN-SMM-APC")
+
+set(CPACK_PACKAGE_VERSION_MAJOR ${EXE_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${EXE_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${EXE_VERSION_PATCH})
+set(CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
+
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${CPACK_PACKAGE_NAME} ${CPACK_PACKAGE_VERSION}")
+set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_SOURCE_DIR}/../README.md")
+set(CPACK_RESOURCE_FILE_README "${CMAKE_SOURCE_DIR}/../README.md")
+set(CPACK_PACKAGE_HOMEPAGE_URL "https://readthedocs.web.cern.ch/display/SUS/Home")
+
+# name of the installer
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+	set(CPACK_SYSTEM_NAME "win64")
+elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
+	set(CPACK_SYSTEM_NAME "win32")
+endif()
+set(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}Installer-${CPACK_PACKAGE_VERSION}-${CPACK_SYSTEM_NAME})
+# set the package header icon for MUI
+set(CPACK_PACKAGE_ICON "${CMAKE_CURRENT_LIST_DIR}\\SU-icon.ico")
+
+# Directory name in the "Program Files"
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "SUSoft\\${CPACK_PACKAGE_NAME}\\${CPACK_PACKAGE_VERSION}")
+# Elements of the menu start folder
+set(CPACK_PACKAGE_EXECUTABLES ${CPACK_PACKAGE_NAME} "${CPACK_PACKAGE_NAME} ${CPACK_PACKAGE_VERSION}")
+
+# Disable asking for components (there are no subcomponents)
+set(CPACK_MONOLITHIC_INSTALL TRUE)
+# And the component description
+set(CPACK_COMPONENT_APPLICATION_DISPLAY_NAME "${CPACK_PACKAGE_NAME}")
+# Registry
+set(CPACK_PACKAGE_INSTALL_REGISTRY_KEY "${CPACK_PACKAGE_NAME} ${CPACK_PACKAGE_VERSION}")
+set(CPACK_PACKAGE_HKLM_REGISTRY_KEY "${CPACK_PACKAGE_NAME}\\${CPACK_PACKAGE_VERSION}")
+
+# NSIS specific
+set(CPACK_NSIS_MODIFY_PATH TRUE)
+# infos
+set(CPACK_NSIS_PACKAGE_NAME "${CPACK_PACKAGE_NAME} ${CPACK_PACKAGE_VERSION}")
+set(CPACK_NSIS_DISPLAY_NAME "${CPACK_PACKAGE_NAME} ${CPACK_PACKAGE_VERSION}")
+set(CPACK_NSIS_HELP_LINK "https://readthedocs.web.cern.ch/display/SUS/User+Guides")
+set(CPACK_NSIS_URL_INFO_ABOUT "https://readthedocs.web.cern.ch/display/SUS/User+Guides")
+set(CPACK_NSIS_CONTACT "susoft.support@cern.ch")
+# Icon in the add/remove control panel. Must be an .exe file 
+set(CPACK_NSIS_INSTALLED_ICON_NAME ${CPACK_COMPONENT_APPLICATION_DISPLAY_NAME}.exe)
+# Set installer icon (need .ico !!!)
+set(CPACK_NSIS_MUI_ICON "${CMAKE_CURRENT_LIST_DIR}\\SU-icon.ico")
+set(CPACK_NSIS_MUI_UNIICON "${CMAKE_CURRENT_LIST_DIR}\\SU-icon.ico")
+
+set(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
+set(CPACK_NSIS_DEFINES "!define MUI_STARTMENUPAGE_DEFAULTFOLDER \"${CPACK_PACKAGE_INSTALL_DIRECTORY}\"")
+
+set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
+	ExecWait '\"$INSTDIR\\vcredist_x64.exe\" /install /quiet /norestart'
+")
