@@ -71,6 +71,7 @@ endfunction(deployqt)
 # param debug_files (list) files that should go into the debug folder
 # param release_files (list) files that should go into the release folder (can be the same as debug_files)
 # param subdir an optionnal subdir where to write the files
+# param (optional) forced - tells if we should copy even if the files already exist
 #
 # Note: `debug_files` and `release_files` must have the same length
 # Note: this function should be called after the definition of the executable
@@ -82,8 +83,13 @@ function(post_build_copy_dlls target debug_files release_files subdir)
 			"$<TARGET_FILE_DIR:${target}>/${subdir}"
 		COMMENT "Creating subdir ${subdir}"
 	)
+	if (${ARGC} GREATER 1 AND ${ARGV1})
+		set (_command "copy")
+	else()
+		set (_command "copy_if_different")
+	endif()
 	add_custom_command(TARGET ${target} POST_BUILD
-		COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+		COMMAND "${CMAKE_COMMAND}" -E ${_command}
 			$<$<CONFIG:debug>:"${debug_files_str}">$<$<CONFIG:release>:"${release_files_str}">
 			"$<TARGET_FILE_DIR:${target}>/${subdir}"
 		COMMENT "Copying dlls to output directory"
