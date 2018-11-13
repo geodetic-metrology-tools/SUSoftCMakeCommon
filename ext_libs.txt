@@ -40,9 +40,9 @@ if(WIN32)
 	##########################################
 	# Qt
 	if(PLATFORM EQUAL 64)
-		set(QT_ROOT_PATH				"C:/Qt/5.11.1/msvc2017_64")
+		set(QT_ROOT_PATH				"C:/Qt/5.11.2/msvc2017_64")
 	else()
-		set(QT_ROOT_PATH				"C:/Qt/5.11.1/msvc2015")
+		set(QT_ROOT_PATH				"C:/Qt/5.11.2/msvc2015")
 	endif()
 	set(QT_VERSION_MAJOR				5)
 
