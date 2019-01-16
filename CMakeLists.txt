@@ -231,6 +231,7 @@ include(ProcessorCount)
 ProcessorCount(N)
 message("-- ${N} cores --")
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 	add_compile_options(
 		# generic
 		"-Wall" "-Wextra" "-pedantic" "-ftemplate-backtrace-limit=0" # the last one is because of Eigen
