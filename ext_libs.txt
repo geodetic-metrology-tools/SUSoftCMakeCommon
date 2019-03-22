@@ -26,7 +26,7 @@ endif()
 #
 # Librairies
 #
-set(BOOST_ROOT							"${EXT_LIB_PATH}/boost_1_68_0")
+set(BOOST_ROOT							"${EXT_LIB_PATH}/boost_1_69_0")
 set(EIGEN_INCLUDE_PATH					"${EXT_LIB_PATH}/eigen-eigen-b9cd8366d4e8")
 set(TCLAP_INCLUDE_PATH					"${EXT_LIB_PATH}/tclap/include")
 set(TUT_INCLUDE_PATH					"${EXT_LIB_PATH}/tut-framework/include")
@@ -40,9 +40,9 @@ if(WIN32)
 	##########################################
 	# Qt
 	if(PLATFORM EQUAL 64)
-		set(QT_ROOT_PATH				"C:/Qt/5.11.2/msvc2017_64")
+		set(QT_ROOT_PATH				"C:/Qt/5.12.2/msvc2017_64")
 	else()
-		set(QT_ROOT_PATH				"C:/Qt/5.11.2/msvc2015")
+		set(QT_ROOT_PATH				"C:/Qt/5.12.2/msvc2015")
 	endif()
 	set(QT_VERSION_MAJOR				5)
 
