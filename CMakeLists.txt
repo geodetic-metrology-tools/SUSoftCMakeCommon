@@ -244,14 +244,22 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 		add_compile_options("-O3")
 	endif()
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+	if (N GREATER 8)
+		set(N 8)
+	endif()
 	add_compile_options(
 		# generic
-		"/Zc:__cplusplus" "/cgthreads${N}" "/W4"
+		"/Zc:__cplusplus" "/cgthreads${N}" "/MP" "/W4"
 		# debug
 		"$<$<CONFIG:debug>:/DEBUG>"
 		"$<$<CONFIG:debug>:/Od>"
 		# release
 		"$<$<CONFIG:release>:/O2>"
+		"$<$<CONFIG:release>:/GL>"
+	)
+	add_link_options(
+		# release
+		"$<$<CONFIG:release>:/LTCG>"
 	)
 endif()
 
