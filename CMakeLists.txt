@@ -111,36 +111,37 @@ function(_install_qt_dlls exe_name)
 	elseif (APPLE)
 		set (deployqtexe "${QT_ROOT_PATH}/bin/macdeployqt")
 	endif()
-	# Remove the Qt folder
-	install(CODE "file(REMOVE_RECURSE ${CMAKE_BINARY_DIR}/qt_dlls)")
 	# Generate the Qt DLLs
 	set(_bindir "${CMAKE_BINARY_DIR}")
 	if(DEFINED CMAKE_RUNTIME_OUTPUT_DIRECTORY)
 		set(_bindir "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 	endif()
-	install(CODE "
-		if(\${BUILD_TYPE} STREQUAL \"Debug\")
-			message(\"Deploying Debug Qt dlls...\")
-			execute_process(
-				COMMAND \"${deployqtexe}\"
-				--debug
-				--verbose 0
-				--no-compiler-runtime
-				--dir \"${CMAKE_BINARY_DIR}/qt_dlls\"
-				\"${_bindir}/Debug/${exe_name}\"
-			)
-		else()
-			message(\"Deploying Release Qt dlls...\")
-			execute_process(
-				COMMAND \"${deployqtexe}\"
-				--release
-				--verbose 0
-				--no-compiler-runtime
-				--dir \"${CMAKE_BINARY_DIR}/qt_dlls\"
-				\"${_bindir}/Release/${exe_name}\"
-			)
-		endif()
-	")
+	install(CODE
+		"
+			if(\${BUILD_TYPE} STREQUAL \"Debug\")
+				message(\"Deploying Debug Qt dlls for ${exe_name}...\")
+				execute_process(
+					COMMAND \"${deployqtexe}\"
+					--debug
+					--verbose 0
+					--no-compiler-runtime
+					--dir \"${CMAKE_BINARY_DIR}/qt_dlls\"
+					\"${_bindir}/Debug/${exe_name}\"
+				)
+			else()
+				message(\"Deploying Release Qt dlls for ${exe_name}...\")
+				execute_process(
+					COMMAND \"${deployqtexe}\"
+					--release
+					--verbose 0
+					--no-compiler-runtime
+					--dir \"${CMAKE_BINARY_DIR}/qt_dlls\"
+					\"${_bindir}/Release/${exe_name}\"
+				)
+			endif()
+		"
+		COMPONENT application
+	)
 endfunction()
 
 # Create an installer package.
@@ -170,7 +171,11 @@ function(create_default_installer)
 	# If Qt, we install the DLLs
 	if (${USE_QT})
 		# Remove the Qt folder
-		install(CODE "file(REMOVE_RECURSE ${CMAKE_BINARY_DIR}/qt_dlls)")
+		install(
+			CODE
+			"file(REMOVE_RECURSE ${CMAKE_BINARY_DIR}/qt_dlls)"
+			COMPONENT application
+		)
 		# Generate the Qt DLLs
 		_install_qt_dlls("${PROJECT_NAME}.exe")
 		foreach(b ${ARGN})
@@ -188,8 +193,8 @@ function(create_default_installer)
 	if (${CREATE_DOC})
 		install(
 			DIRECTORY "${CMAKE_SOURCE_DIR}/../doc/"
-			DESTINATION "./doc"
-			COMPONENT application
+			DESTINATION "./doc/"
+			COMPONENT documentation
 		)
 	endif()
 endfunction(create_default_installer)

@@ -11,6 +11,7 @@ set(CPACK_STRIP_FILES TRUE)
 # MSVC libraries
 if (MSVC)
 	set(CMAKE_INSTALL_UCRT_LIBRARIES TRUE)
+	set(CMAKE_INSTALL_SYSTEM_RUNTIME_COMPONENT application)
 	include(InstallRequiredSystemLibraries)
 endif()
 
