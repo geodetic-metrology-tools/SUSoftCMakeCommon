@@ -219,6 +219,7 @@ endfunction(installer_copy_files)
 #
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+enable_testing()
 
 # Specify the languages used:
 enable_language("CXX")
