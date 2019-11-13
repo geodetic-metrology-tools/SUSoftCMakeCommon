@@ -140,7 +140,7 @@ function(_install_qt_dlls exe_name)
 				)
 			endif()
 		"
-		COMPONENT application
+		COMPONENT libraries
 	)
 endfunction()
 
@@ -159,14 +159,47 @@ endfunction()
 #
 # Note: this function should be called after the definition of the executable
 function(create_default_installer)
+set(CPACK_MONOLITHIC_INSTALL FALSE)
+	cpack_add_component(application
+		DISPLAY_NAME "${CPACK_PACKAGE_NAME}"
+		DESCRIPTION "Install ${CPACK_PACKAGE_DESCRIPTION_SUMMARY}"
+		REQUIRED
+		GROUP App
+		INSTALL_TYPES default
+	)
+	cpack_add_component(libraries
+		DISPLAY_NAME "Libraries"
+		DESCRIPTION "Install required libraries to run the program."
+		REQUIRED
+		GROUP App
+		INSTALL_TYPES default
+	)
+	cpack_add_component(documentation
+		DISPLAY_NAME "Documentation"
+		DESCRIPTION "Install some documentation in the install folder."
+		GROUP Doc
+		DEPENDS application
+		INSTALL_TYPES default
+	)
+
 	if(UNIX)
 		return()
 	endif()
+
 	install(
 		TARGETS ${PROJECT_NAME}
 		DESTINATION "."
 		COMPONENT application
 	)
+
+	# Install VCRuntime
+	if (MSVC)
+		install(
+			PROGRAMS "${MSVC_REDIST_DIR}/${VCREDIST_INSTALLER_NAME}"
+			DESTINATION "."
+			COMPONENT libraries
+		)
+	endif()
 
 	# If Qt, we install the DLLs
 	if (${USE_QT})
@@ -174,7 +207,7 @@ function(create_default_installer)
 		install(
 			CODE
 			"file(REMOVE_RECURSE ${CMAKE_BINARY_DIR}/qt_dlls)"
-			COMPONENT application
+			COMPONENT libraries
 		)
 		# Generate the Qt DLLs
 		_install_qt_dlls("${PROJECT_NAME}.exe")
@@ -185,7 +218,7 @@ function(create_default_installer)
 		install(
 			DIRECTORY "${CMAKE_BINARY_DIR}/qt_dlls/"
 			DESTINATION "."
-			COMPONENT application
+			COMPONENT libraries
 		)
 	endif()
 
@@ -267,6 +300,14 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 		# release
 		"$<$<CONFIG:release>:/LTCG>"
 	)
+	# Manage VCRuntime
+	set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP TRUE)
+	include(InstallRequiredSystemLibraries)
+	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+		set(VCREDIST_INSTALLER_NAME "vc_redist.x64.exe")
+	elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
+		set(VCREDIST_INSTALLER_NAME "vc_redist.x86.exe")
+	endif()
 endif()
 
 # List of directories to search for CMake modules:
