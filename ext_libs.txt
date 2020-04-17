@@ -26,8 +26,8 @@ endif()
 #
 # Librairies
 #
-set(BOOST_ROOT							"${EXT_LIB_PATH}/boost_1_71_0")
-set(EIGEN_INCLUDE_PATH					"${EXT_LIB_PATH}/eigen-eigen-323c052e1731")
+set(BOOST_ROOT							"${EXT_LIB_PATH}/boost_1_72_0")
+set(EIGEN_INCLUDE_PATH					"${EXT_LIB_PATH}/eigen")
 set(TCLAP_INCLUDE_PATH					"${EXT_LIB_PATH}/tclap/include")
 set(TUT_INCLUDE_PATH					"${EXT_LIB_PATH}/tut-framework/include")
 
