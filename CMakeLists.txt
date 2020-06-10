@@ -115,7 +115,7 @@ function(set_qlalr)
 			COMMAND "${QLALR_EXE}" --no-debug --no-lines ${DOT_OPTION} "${QLALR_CLASSNAME}.g" ${DOT_COMMAND}
 			MAIN_DEPENDENCY "${QLALR_DIRECTORY}/${QLALR_CLASSNAME}.g"
 			WORKING_DIRECTORY "${QLALR_DIRECTORY}"
-			COMMENT "Running QLALR for ${QLALR_CLASSNAME}.g"
+			COMMENT "Running ${QLALR_EXE} for ${QLALR_CLASSNAME}.g"
 		)
 	endif()
 endfunction(set_qlalr)
