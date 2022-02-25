@@ -30,14 +30,13 @@ set(BOOST_ROOT							"${EXT_LIB_PATH}/boost_1_77_0")
 set(EIGEN_INCLUDE_PATH					"${EXT_LIB_PATH}/eigen")
 set(TCLAP_INCLUDE_PATH					"${EXT_LIB_PATH}/tclap/include")
 set(TUT_INCLUDE_PATH					"${EXT_LIB_PATH}/tut-framework/include")
-set(CIRCE_EXEC_DIR						"${EXT_LIB_PATH}/Circe")
-
 
 ##########################################
 #
 # WINDOWS
 #
 if(WIN32)
+
 	##########################################
 	# Qt
 	if(PLATFORM EQUAL 64)
@@ -49,5 +48,10 @@ if(WIN32)
 
 	##########################################
 	# Other susoft related
-	set(REFRAME_LIBRARY_DIR				"${EXT_LIB_PATH}/Reframe")
+	if(PLATFORM EQUAL 64)
+		set(REFRAME2016_LIBRARY_DIR			"${EXT_LIB_PATH}/Reframe2016/x64")
+	else()
+		set(REFRAME2016_LIBRARY_DIR			"${EXT_LIB_PATH}/Reframe2016/x86")
+	endif()
+	
 endif()
