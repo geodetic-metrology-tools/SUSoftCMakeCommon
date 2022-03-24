@@ -302,6 +302,17 @@ function(installer_copy_files files destination)
 	)
 endfunction(installer_copy_files)
 
+#Copy Reframe DLL files into executable directory
+function(copyReframeDLL target)
+	add_custom_command(TARGET ${target} POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_directory
+			${REFRAME2016_LIBRARY_DIR}
+			$<TARGET_FILE_DIR:${target}>)
+
+endfunction(copyReframeDLL)
+
+
+
 #
 # GLOBAL SETUP
 #

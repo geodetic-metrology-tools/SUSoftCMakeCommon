@@ -38,6 +38,7 @@ In particular, check these variables:
 - `QT_ROOT_PATH`: The path to Qt installation. You should have among others `bin` and `lib` folders there
 - `QT_VERSION_MAJOR`: The major version of Qt (so far, it is `5`)
 - `REFRAME_LIBRARY_DIR`: The path to Reframe folder
+- `REFRAME2016_LIBRARY_DIR`: The path to Reframe (v2016) folder
 - `TCLAP_INCLUDE_PATH`: The path to TClap folder
 - `TUT_INCLUDE_PATH`: The path to Tut folder
 
