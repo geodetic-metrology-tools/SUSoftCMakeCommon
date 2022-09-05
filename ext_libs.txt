@@ -47,6 +47,14 @@ if(WIN32)
 	set(QT_VERSION_MAJOR				5)
 
 	##########################################
+	# OpenSSL
+	if(PLATFORM EQUAL 64)
+		set(OPENSSL_ROOT_DIR				"${QT_ROOT_PATH}/../../Tools/OpenSSL/Win_x64")
+	else()
+		set(OPENSSL_ROOT_DIR				"${QT_ROOT_PATH}/../../Tools/OpenSSL/Win_x32")
+	endif()
+
+	##########################################
 	# Other susoft related
 	if(PLATFORM EQUAL 64)
 		set(REFRAME2016_LIBRARY_DIR			"${EXT_LIB_PATH}/Reframe2016/x64")

@@ -41,6 +41,7 @@ In particular, check these variables:
 - `REFRAME2016_LIBRARY_DIR`: The path to Reframe (v2016) folder
 - `TCLAP_INCLUDE_PATH`: The path to TClap folder
 - `TUT_INCLUDE_PATH`: The path to Tut folder
+- `OPENSSL_ROOT_DIR`: The path to OpenSSL folder
 
 Usage
 -----
@@ -54,6 +55,8 @@ You can configure what you want to initialize thanks to these variables:
 - if `USE_QT` is TRUE, configure QT.
 	- You need to set `QT_ROOT_PATH` to your root installation
 	- You can tell the Qt wanted modules as a list in `QT_WANTED_MODULES` (default is Core)
+- if `USE_OPENSSL` is TRUE, provide OpenSSL DLLs for installers.
+	- You need to set `OPENSSL_ROOT_DIR` to your root installation
 - if `cpack_build`, build binary and source package installers.
 - if `enable_console`, Enable the console
 
@@ -116,6 +119,7 @@ The installer contains the minimum required files:
 - the VC redist
 - if `USE_QT`, runs `windeployqt`
 - if `CREATE_DOC`, adds the doc
+- if `USE_OPENSSL`, copies OpenSSL DLLs
 
 **Note**: You can add extra files to the installer thanks to the function
 `installer_copy_files` (see below)

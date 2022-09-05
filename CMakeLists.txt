@@ -120,7 +120,7 @@ function(set_qlalr)
 	endif()
 endfunction(set_qlalr)
 
-# Copy files int the build directory at build time if files don't already exist.
+# Copy files in the build directory at build time if files don't already exist.
 #
 # param target the target when we want to copy (like the executable name)
 # param debug_files (list) files that should go into the debug folder
@@ -138,7 +138,7 @@ function(post_build_copy_dlls target debug_files release_files subdir)
 			"$<TARGET_FILE_DIR:${target}>/${subdir}"
 		COMMENT "Creating subdir ${subdir}"
 	)
-	if (${ARGC} GREATER 1 AND ${ARGV1})
+	if (${ARGC} GREATER 1)
 		set (_command "copy")
 	else()
 		set (_command "copy_if_different")
@@ -237,6 +237,7 @@ set(CPACK_MONOLITHIC_INSTALL FALSE)
 		INSTALL_TYPES default
 	)
 
+
 	if(UNIX)
 		return()
 	endif()
@@ -276,6 +277,23 @@ set(CPACK_MONOLITHIC_INSTALL FALSE)
 			COMPONENT libraries
 		)
 	endif()
+	
+	# If OpenSSL
+	if (OPENSSL_FOUND)
+		# Remove
+		install(
+			CODE
+			"file(REMOVE_RECURSE ${CMAKE_BINARY_DIR}/openssl_dlls)"
+			COMPONENT libraries
+		)
+		# Install
+		get_target_property(OPENSSL_DLLS OpenSSL::SSL RUNTIME_OBJECTS)
+		install(
+			FILES ${OPENSSL_DLLS}
+			DESTINATION "."
+			COMPONENT libraries
+		)
+	endif()
 
 	# If we generate the doc, we install it
 	if (${CREATE_DOC})
@@ -310,8 +328,6 @@ function(copyReframeDLL target)
 			$<TARGET_FILE_DIR:${target}>)
 
 endfunction(copyReframeDLL)
-
-
 
 #
 # GLOBAL SETUP
@@ -450,7 +466,23 @@ if (USE_QT)
 
 	foreach(module ${QT_WANTED_MODULES})
 		find_package(${module} REQUIRED)
+		if(WIN32 AND ${module} STREQUAL "Qt5Network" AND Qt5Network_FOUND)
+			set(USE_OPENSSL TRUE)
+		endif()
 	endforeach(module)
+endif()
+
+# WIN32 guard is here since CentOS 7 package manager does not support QWebEngineWidgets anyway, so OpenSSL is not needed
+if(WIN32)
+	if (USE_OPENSSL)
+		find_package(OpenSSL REQUIRED)
+		if(WIN32)
+			file(GLOB OPENSSL_DLLS "${OPENSSL_INCLUDE_DIR}/../bin/*.dll")
+			set_target_properties(OpenSSL::SSL PROPERTIES RUNTIME_OBJECTS "${OPENSSL_DLLS}")
+		elseif(UNIX)
+			set_target_properties(OpenSSL::SSL PROPERTIES RUNTIME_OBJECTS "${OPENSSL_LIBRARIES}")
+		endif()
+	endif()
 endif()
 
 
