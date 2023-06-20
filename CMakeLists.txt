@@ -362,7 +362,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 		add_compile_options("-g" "-O0")
 	# release
 	else()
-		add_compile_options("-O3")
+		add_compile_options("-O2")
 	endif()
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	if (N GREATER 8)
