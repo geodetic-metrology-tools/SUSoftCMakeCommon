@@ -5,11 +5,17 @@
 
 ##########################################
 # Operating system
+# Set the path to the external libraries if it has not been set already 
+if(NOT EXT_LIB_PATH)
+	if(UNIX)
+		set(EXT_LIB_PATH					"/susoft/ext")
+	else()
+		set(EXT_LIB_PATH					"C:/susoft/ext")
+	endif()
+endif()
+
 if(UNIX)
-	set(EXT_LIB_PATH					"/home/$ENV{USER}/susoft/ext")
 	set(QT_ROOT_PATH					"/usr/share/qt5")
-else()
-	set(EXT_LIB_PATH					"C:/susoft/ext")
 endif()
 
 ##########################################
@@ -26,7 +32,7 @@ endif()
 #
 # Librairies
 #
-set(BOOST_ROOT							"${EXT_LIB_PATH}/boost_1_77_0")
+set(BOOST_ROOT							"${EXT_LIB_PATH}/boost")
 set(EIGEN_INCLUDE_PATH					"${EXT_LIB_PATH}/eigen")
 set(TCLAP_INCLUDE_PATH					"${EXT_LIB_PATH}/tclap/include")
 set(TUT_INCLUDE_PATH					"${EXT_LIB_PATH}/tut-framework/include")
@@ -39,10 +45,12 @@ if(WIN32)
 
 	##########################################
 	# Qt
+	# Search for the first fitting available Qt 
+	file(GLOB QT_VERSION_DIR RELATIVE C:/Qt C:/Qt/5.15*)
 	if(PLATFORM EQUAL 64)
-		set(QT_ROOT_PATH				"C:/Qt/5.15.2/msvc2019_64")
+		set(QT_ROOT_PATH				"C:/Qt/${QT_VERSION_DIR}/msvc2019_64")
 	else()
-		set(QT_ROOT_PATH				"C:/Qt/5.15.2/msvc2019")
+		set(QT_ROOT_PATH				"C:/Qt/${QT_VERSION_DIR}/msvc2019")
 	endif()
 	set(QT_VERSION_MAJOR				5)
 
