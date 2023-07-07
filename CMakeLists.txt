@@ -417,12 +417,13 @@ if (APPLE)
 endif()
 
 #
-# PROJECT SETUP
+# DEPENDENCIES SETUP
 #
 
-set(EXECUTABLE_NAME ${PROJECT_NAME})
-project(${PROJECT_NAME} CXX)
-include(${CMAKE_CURRENT_LIST_DIR}/ext_libs.txt)
+# Use cache variable if provided using the command line interface, use defaults if not
+set(EXT_LIBS_TXT_PATH "${CMAKE_CURRENT_LIST_DIR}/ext_libs.txt" CACHE FILEPATH "Filepath to the ext folder")
+message("Ext libs file used was: ${EXT_LIBS_TXT_PATH}")
+include("${EXT_LIBS_TXT_PATH}")
 
 #
 # DOXYGEN SETUP

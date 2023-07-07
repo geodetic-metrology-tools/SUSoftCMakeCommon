@@ -1,7 +1,7 @@
 SUSoftCMakeCommon
 =================
 
-This repository is supposed to hold the shared CMake configuration between the different SU softwares, such as LGC or CSGeo.
+This repository is supposed to hold the shared CMake configuration between the different SU softwares.
 
 [Features](#features)
 
@@ -24,22 +24,15 @@ Features
 Configuration
 -------------
 
-You should clone this repository in the `susoft` folder next to the other repositories. Then, include the `CMakeLists.txt` of this repository into your main CMake file.
+This repository contains a `ext_libs.txt` file. The paths defined should be present on your OS. The variables are:
 
-This repository contains a `ext_libs.txt` file. Feel free to update the paths in this file, to match *your* dev environment.
-In particular, check these variables:
-
+- `EXT_LIBS_TXT_PATH`: path to your `ext_libs.txt` path that should define `EXT_LIB_PATH`
 - `EXT_LIB_PATH`: path to your dev environment (default is `"C:/susoft/ext"`)
 - `BOOST_ROOT`: The path to Boost folder
 - `EIGEN_INCLUDE_PATH`: The path to Eigen folder
-- `GLEW_BINARY_PATH`: The path to Glew binary folder
-- `GLEW_INCLUDE_PATH`: The path to Glew include folder
-- `GLEW_LIBRARIES`: The path to Gley lib folder
 - `QT_ROOT_PATH`: The path to Qt installation. You should have among others `bin` and `lib` folders there
-- `QT_VERSION_MAJOR`: The major version of Qt (so far, it is `5`)
 - `REFRAME_LIBRARY_DIR`: The path to Reframe folder
 - `REFRAME2016_LIBRARY_DIR`: The path to Reframe (v2016) folder
-- `TCLAP_INCLUDE_PATH`: The path to TClap folder
 - `TUT_INCLUDE_PATH`: The path to Tut folder
 - `OPENSSL_ROOT_DIR`: The path to OpenSSL folder
 
@@ -59,6 +52,10 @@ You can configure what you want to initialize thanks to these variables:
 	- You need to set `OPENSSL_ROOT_DIR` to your root installation
 - if `cpack_build`, build binary and source package installers.
 - if `enable_console`, Enable the console
+
+Moreover, you can provide a flag during CMake project generation to override the default `EXT_LIBS_TXT_PATH` if you don't want to use the default path provided by the SUSoftCMakeCommon submodule.
+
+In order to do that, provide a path via flag:`-DEXT_LIBS_TXT_PATH="C:/susoft/SUSoftCMakeCommon/ext_libs.txt"`. This flag has to be added prior to the CMake source dir.
 
 Functions
 ---------

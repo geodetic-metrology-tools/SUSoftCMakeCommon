@@ -5,18 +5,17 @@
 
 ##########################################
 # Operating system
-# Set the path to the external libraries if it has not been set already 
-if(NOT EXT_LIB_PATH)
-	if(UNIX)
-		set(EXT_LIB_PATH					"/susoft/ext")
+if(UNIX)
+	if(EXISTS "/home/$ENV{USER}/susoft/ext")
+		set(EXT_LIB_PATH				"/home/$ENV{USER}/susoft/ext")
 	else()
-		set(EXT_LIB_PATH					"C:/susoft/ext")
-	endif()
+		set(EXT_LIB_PATH				"/susoft/ext")
+	endif(EXISTS "/home/$ENV{USER}/susoft/ext")
+	set(QT_ROOT_PATH					"/usr/share/qt5")
+else()
+	set(EXT_LIB_PATH					"C:/susoft/ext")
 endif()
 
-if(UNIX)
-	set(QT_ROOT_PATH					"/usr/share/qt5")
-endif()
 
 ##########################################
 # Compiled version
@@ -46,13 +45,15 @@ if(WIN32)
 	##########################################
 	# Qt
 	# Search for the first fitting available Qt 
-	file(GLOB QT_VERSION_DIR RELATIVE C:/Qt C:/Qt/5.15*)
-	if(PLATFORM EQUAL 64)
-		set(QT_ROOT_PATH				"C:/Qt/${QT_VERSION_DIR}/msvc2019_64")
-	else()
-		set(QT_ROOT_PATH				"C:/Qt/${QT_VERSION_DIR}/msvc2019")
-	endif()
-	set(QT_VERSION_MAJOR				5)
+	file(GLOB QT_VERSION_DIRS RELATIVE C:/Qt C:/Qt/5.15*)
+	if(QT_VERSION_DIRS)
+		list(GET QT_VERSION_DIRS -1 QT_DIR) # get the last dir
+		if(PLATFORM EQUAL 64)
+			set(QT_ROOT_PATH				"C:/Qt/${QT_DIR}/msvc2019_64")
+		else()
+			set(QT_ROOT_PATH				"C:/Qt/${QT_DIR}/msvc2019")
+		endif(PLATFORM EQUAL 64)
+	endif(QT_VERSION_DIRS)
 
 	##########################################
 	# OpenSSL
