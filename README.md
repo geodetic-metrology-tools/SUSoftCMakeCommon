@@ -28,7 +28,6 @@ This repository contains a `ext_libs.txt` file. The paths defined should be pres
 
 - `EXT_LIBS_TXT_PATH`: path to your `ext_libs.txt` path that should define `EXT_LIB_PATH`
 - `EXT_LIB_PATH`: path to your dev environment (default is `"C:/susoft/ext"`)
-- `BOOST_ROOT`: The path to Boost folder
 - `EIGEN_INCLUDE_PATH`: The path to Eigen folder
 - `QT_ROOT_PATH`: The path to Qt installation. You should have among others `bin` and `lib` folders there
 - `REFRAME_LIBRARY_DIR`: The path to Reframe folder
