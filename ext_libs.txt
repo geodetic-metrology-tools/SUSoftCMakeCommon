@@ -56,11 +56,16 @@ if(WIN32)
 
 	##########################################
 	# OpenSSL
-	if(PLATFORM EQUAL 64)
-		set(OPENSSL_ROOT_DIR				"${QT_ROOT_PATH}/../../Tools/OpenSSL/Win_x64")
-	else()
-		set(OPENSSL_ROOT_DIR				"${QT_ROOT_PATH}/../../Tools/OpenSSL/Win_x32")
-	endif()
+	# Search the Qt directory for the OpenSSL directory similar to Qt above
+	file(GLOB OPENSSL_VERSION_DIR RELATIVE ${QT_ROOT_PATH}/../../Tools ${QT_ROOT_PATH}/../../Tools/OpenSSL*)
+	if (OPENSSL_VERSION_DIR)
+		list(GET OPENSSL_VERSION_DIR -1 OPENSSL_DIR)
+		if(PLATFORM EQUAL 64)
+			set(OPENSSL_ROOT_DIR				"${QT_ROOT_PATH}/../../Tools/${OPENSSL_DIR}/Win_x64")
+		else()
+			set(OPENSSL_ROOT_DIR				"${QT_ROOT_PATH}/../../Tools/${OPENSSL_DIR}/Win_x32")
+		endif(PLATFORM EQUAL 64)
+	endif(OPENSSL_VERSION_DIR)
 
 	##########################################
 	# Other susoft related
