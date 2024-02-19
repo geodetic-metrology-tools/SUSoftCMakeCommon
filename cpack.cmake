@@ -20,7 +20,7 @@ set(CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSIO
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${CPACK_PACKAGE_NAME} ${CPACK_PACKAGE_VERSION}")
 set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_SOURCE_DIR}/../README.md")
 set(CPACK_RESOURCE_FILE_README "${CMAKE_SOURCE_DIR}/../README.md")
-set(CPACK_PACKAGE_HOMEPAGE_URL "https://readthedocs.web.cern.ch/display/SUS/Home")
+set(CPACK_PACKAGE_HOMEPAGE_URL "https://confluence.cern.ch/display/SUS/Home")
 
 # name of the installer
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
@@ -48,8 +48,8 @@ set(CPACK_NSIS_MODIFY_PATH TRUE)
 # infos
 set(CPACK_NSIS_PACKAGE_NAME "${CPACK_PACKAGE_NAME} ${CPACK_PACKAGE_VERSION}")
 set(CPACK_NSIS_DISPLAY_NAME "${CPACK_PACKAGE_NAME} ${CPACK_PACKAGE_VERSION}")
-set(CPACK_NSIS_HELP_LINK "https://readthedocs.web.cern.ch/display/SUS/User+Guides")
-set(CPACK_NSIS_URL_INFO_ABOUT "https://readthedocs.web.cern.ch/display/SUS/User+Guides")
+set(CPACK_NSIS_HELP_LINK "https://confluence.cern.ch/display/SUS/User+Guides")
+set(CPACK_NSIS_URL_INFO_ABOUT "https://confluence.cern.ch/display/SUS/User+Guides")
 set(CPACK_NSIS_CONTACT "susoft.support@cern.ch")
 # Icon in the add/remove control panel. Must be an .exe file 
 set(CPACK_NSIS_INSTALLED_ICON_NAME ${CPACK_COMPONENT_APPLICATION_DISPLAY_NAME}.exe)
