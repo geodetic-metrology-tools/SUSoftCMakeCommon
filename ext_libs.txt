@@ -11,7 +11,7 @@ if(UNIX)
 	else()
 		set(EXT_LIB_PATH				"/susoft/ext")
 	endif(EXISTS "/home/$ENV{USER}/susoft/ext")
-	set(QT_ROOT_PATH					"/usr/share/qt5")
+	set(QT_ROOT_PATH					"/usr/share/qt6")
 else()
 	set(EXT_LIB_PATH					"C:/susoft/ext")
 endif()
@@ -44,7 +44,7 @@ if(WIN32)
 	##########################################
 	# Qt
 	# Search for the first fitting available Qt 
-	file(GLOB QT_VERSION_DIRS RELATIVE C:/Qt C:/Qt/5.15*)
+	file(GLOB QT_VERSION_DIRS RELATIVE C:/Qt C:/Qt/6.5*)
 	if(QT_VERSION_DIRS)
 		list(GET QT_VERSION_DIRS -1 QT_DIR) # get the last dir
 		if(PLATFORM EQUAL 64)

@@ -458,7 +458,7 @@ endif()
 
 if (USE_QT)
 	if (NOT QT_WANTED_MODULES)
-		set(QT_WANTED_MODULES "Qt5Core")
+		set(QT_WANTED_MODULES "Qt6Core")
 	endif()
 
 	set(CMAKE_PREFIX_PATH "${QT_ROOT_PATH}")
@@ -467,7 +467,7 @@ if (USE_QT)
 
 	foreach(module ${QT_WANTED_MODULES})
 		find_package(${module} REQUIRED)
-		if(WIN32 AND ${module} STREQUAL "Qt5Network" AND Qt5Network_FOUND)
+		if(WIN32 AND ${module} STREQUAL "Qt6Network" AND Qt6Network_FOUND)
 			set(USE_OPENSSL TRUE)
 		endif()
 	endforeach(module)
