@@ -371,6 +371,9 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	add_compile_options(
 		# generic
 		"/Zc:__cplusplus" "/cgthreads${N}" "/MP" "/W4"
+		# suppress third-party template noise
+        "/external:W0"
+        "/diagnostics:classic"
 		# debug
 		"$<$<CONFIG:debug>:/DEBUG>"
 		"$<$<CONFIG:debug>:/Od>"
