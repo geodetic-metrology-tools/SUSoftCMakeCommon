@@ -129,10 +129,19 @@ endfunction(set_qlalr)
 
 # Copy files in the build directory at build time if files don't already exist.
 #
+# This is a POST_BUILD step on `target`, so it runs whenever the target is
+# (re)built. For shared-library DLLs this means the caller must also
+# target_link_libraries against the DLL target — that link dependency ensures
+# the target re-links (and thus fires this copy) when the DLL changes.
+#
+# We use $<TARGET_FILE_DIR:target> instead of CMAKE_CURRENT_BINARY_DIR because
+# multi-config generators (Ninja Multi-Config) place binaries in per-config
+# subdirs (e.g. Debug/, Release/) that only generator expressions can resolve.
+#
 # param target the target when we want to copy (like the executable name)
 # param debug_files (list) files that should go into the debug folder
 # param release_files (list) files that should go into the release folder (can be the same as debug_files)
-# param subdir an optionnal subdir where to write the files
+# param subdir an optional subdir where to write the files
 # param (optional) forced - tells if we should copy even if the files already exist
 #
 # Note: `debug_files` and `release_files` must have the same length
@@ -294,9 +303,8 @@ set(CPACK_MONOLITHIC_INSTALL FALSE)
 			COMPONENT libraries
 		)
 		# Install
-		get_target_property(OPENSSL_DLLS OpenSSL::SSL RUNTIME_OBJECTS)
 		install(
-			FILES ${OPENSSL_DLLS}
+			FILES ${OPENSSL_RUNTIME_DLLS}
 			DESTINATION "."
 			COMPONENT libraries
 		)
@@ -477,25 +485,22 @@ if (USE_QT)
 
 	foreach(module ${QT_WANTED_MODULES})
 		find_package(${module} REQUIRED)
-		if(WIN32 AND ${module} STREQUAL "Qt6Network" AND Qt6Network_FOUND)
+		if(${module} STREQUAL "Qt6Network" AND Qt6Network_FOUND)
 			set(USE_OPENSSL TRUE)
 		endif()
 	endforeach(module)
 endif()
 
 # WIN32 guard is here since CentOS 7 package manager does not support QWebEngineWidgets anyway, so OpenSSL is not needed
-if(WIN32)
-	if (USE_OPENSSL)
-		if(WIN32)
-			set(OPENSSL_ROOT_DIR "C:/susoft/ext/OpenSSL/x64")
-			
-		endif()
-		find_package(OpenSSL REQUIRED)
-		if(WIN32)
-			file(GLOB OPENSSL_DLLS "${OPENSSL_ROOT_DIR}/bin/*.dll")
-			set_target_properties(OpenSSL::SSL PROPERTIES RUNTIME_OBJECTS "${OPENSSL_DLLS}")
-		elseif(UNIX)
-			set_target_properties(OpenSSL::SSL PROPERTIES RUNTIME_OBJECTS "${OPENSSL_LIBRARIES}")
+if(USE_OPENSSL)
+	if(WIN32)
+		set(OPENSSL_ROOT_DIR "C:/susoft/ext/OpenSSL/x64")
+	endif()
+	find_package(OpenSSL REQUIRED)
+	if(WIN32)
+		file(GLOB OPENSSL_RUNTIME_DLLS "${OPENSSL_ROOT_DIR}/bin/*.dll")
+		if(NOT OPENSSL_RUNTIME_DLLS)
+			message(WARNING "No OpenSSL DLLs found in ${OPENSSL_ROOT_DIR}/bin/")
 		endif()
 	endif()
 endif()
