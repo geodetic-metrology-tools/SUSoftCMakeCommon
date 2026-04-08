@@ -25,6 +25,10 @@
 
 cmake_minimum_required(VERSION 3.10)
 
+# Capture path at include time — CMAKE_CURRENT_LIST_DIR inside functions
+# resolves to the caller's directory, not where the function is defined.
+set(_SUSOFTCMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}")
+
 #
 # FUNCTIONS
 #
@@ -54,13 +58,16 @@ function(deployqt target)
 		set (executable ${ARGV2})
 	endif()
 
+	# Use a lock wrapper to serialize windeployqt calls, preventing parallel
+	# write conflicts when multiple targets deploy to the same directory (Ninja).
 	add_custom_command(TARGET ${target} POST_BUILD
-		COMMAND "${deployqtexe}"
-			$<$<CONFIG:debug>:--debug>$<$<CONFIG:release>:--release>
-			--verbose 0
-			--no-compiler-runtime
-			--dir "${outputdir}"
-			"${executable}"
+		COMMAND "${CMAKE_COMMAND}"
+			"-DDEPLOYQT_EXE=${deployqtexe}"
+			"-DCONFIG=$<CONFIG>"
+			"-DOUTPUT_DIR=${outputdir}"
+			"-DEXECUTABLE=${executable}"
+			"-DLOCK_DIR=${CMAKE_BINARY_DIR}"
+			-P "${_SUSOFTCMAKE_DIR}/deployqt_locked.cmake"
 		COMMENT "Deploying Qt..."
 	)
 endfunction(deployqt)
