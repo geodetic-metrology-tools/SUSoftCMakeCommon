@@ -95,10 +95,19 @@ function(set_qlalr)
 	cmake_parse_arguments(QLALR "${options}" "${oneValueArgs}" "" ${ARGN})
 	string(TOLOWER ${QLALR_CLASSNAME} QLALR_CLASSNAME_LOWER)
 
+	# On Linux, Qt installs qlalr under lib64/qt6/libexec/ (RPM layout) or
+	# lib/qt6/libexec/ (DEB layout), whereas QT_ROOT_PATH points to the CMake
+	# config location (/usr/share/qt6). On Windows QT_ROOT_PATH already points
+	# at the install root so the first hint (bin/) resolves qlalr.exe directly.
+	get_filename_component(_qlalr_qt_parent "${QT_ROOT_PATH}" DIRECTORY)   # e.g. /usr/share
+	get_filename_component(_qlalr_prefix   "${_qlalr_qt_parent}" DIRECTORY) # e.g. /usr
 	find_program(QLALR_EXE
 		NAMES "qlalr" "qlalr.exe"
-		HINTS "${QT_ROOT_PATH}"
-		PATH_SUFFIXES "bin"
+		HINTS
+			"${QT_ROOT_PATH}"
+			"${_qlalr_prefix}/lib64/qt6"
+			"${_qlalr_prefix}/lib/qt6"
+		PATH_SUFFIXES "bin" "libexec"
 		DOC "QLALR executable path"
 	)
 	find_program(DOT_EXE
@@ -112,6 +121,37 @@ function(set_qlalr)
 		if(DOT_EXE AND QLALR_GENERATEDOT)
 			set(DOT_OPTION "--dot")
 			set(DOT_COMMAND "> ${QLALR_CLASSNAME}.gv && \"${DOT_EXE}\" -Tsvg ${QLALR_CLASSNAME}.gv -o ${QLALR_CLASSNAME}.svg")
+		endif()
+		# Use a dual-hash stamp:
+		#   g_hash   — detects grammar changes
+		#   hpp_hash — detects git-reset of generated file to stale content
+		# If the hash does not match, generate the grammar files.
+		set(_qlalr_stamp "${CMAKE_BINARY_DIR}/.qlalr_${QLALR_CLASSNAME_LOWER}_stamp")
+		file(MD5 "${QLALR_DIRECTORY}/${QLALR_CLASSNAME}.g" _qlalr_g_hash)
+		if(EXISTS "${QLALR_DIRECTORY}/${QLALR_CLASSNAME}.hpp")
+			file(MD5 "${QLALR_DIRECTORY}/${QLALR_CLASSNAME}.hpp" _qlalr_hpp_hash)
+		else()
+			set(_qlalr_hpp_hash "missing")
+		endif()
+		set(_qlalr_current "${_qlalr_g_hash}:${_qlalr_hpp_hash}")
+		if(EXISTS "${_qlalr_stamp}")
+			file(READ "${_qlalr_stamp}" _qlalr_stored)
+			string(STRIP "${_qlalr_stored}" _qlalr_stored)
+		else()
+			set(_qlalr_stored "")
+		endif()
+		if(NOT "${_qlalr_current}" STREQUAL "${_qlalr_stored}")
+			execute_process(
+				COMMAND "${QLALR_EXE}" --no-debug --no-lines "${QLALR_CLASSNAME}.g"
+				WORKING_DIRECTORY "${QLALR_DIRECTORY}"
+				RESULT_VARIABLE _qlalr_result
+			)
+			if(_qlalr_result)
+				message(WARNING "qlalr failed for ${QLALR_CLASSNAME}.g (exit ${_qlalr_result})")
+			else()
+				file(MD5 "${QLALR_DIRECTORY}/${QLALR_CLASSNAME}.hpp" _qlalr_hpp_hash_new)
+				file(WRITE "${_qlalr_stamp}" "${_qlalr_g_hash}:${_qlalr_hpp_hash_new}")
+			endif()
 		endif()
 		add_custom_command(
 			OUTPUT
